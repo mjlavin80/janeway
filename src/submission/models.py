@@ -381,6 +381,14 @@ class Article(models.Model):
     preprint_decision_notification = models.BooleanField(default=False)
     preprint_journal_article = models.ForeignKey('submission.Article', blank=True, null=True)
 
+    # Suggestions
+    suggested_editor = models.ForeignKey('core.Account', blank=True, null=True, help_text=_('Suggest an editor'
+                                                                                            'for your article.'),
+                                         related_name='suggested_editor')
+    suggested_reviewers = models.TextField(blank=True, null=True, help_text=_('Suggest reviewers for your article,'
+                                                                              'please supply name and email'
+                                                                              'address.'))
+
     allarticles = AllArticleManager()
     objects = ArticleManager()
     preprints = PreprintManager()
@@ -1163,6 +1171,8 @@ class SubmissionConfiguration(models.Model):
     license = models.BooleanField(default=True)
     keywords = models.BooleanField(default=True)
     section = models.BooleanField(default=True)
+    suggest_reviewers = models.BooleanField(default=False)
+    suggest_editors = models.BooleanField(default=False)
 
     figures_data = models.BooleanField(default=True, verbose_name=_('Figures and Data Files'))
 
