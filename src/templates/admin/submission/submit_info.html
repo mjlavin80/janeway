@@ -49,14 +49,28 @@
                             </div>
                         {% endif %}
 
-                        <div class="large-{{ request.journal.submissionconfiguration.lang_section_license_width }} columns end">
+                        <div class="large-{{ request.journal.submissionconfiguration.lang_section_license_width }} columns">
                             {{ form.section|foundation }}
                         </div>
 
                         {% if request.journal.submissionconfiguration.license %}
-                            <div class="large-{{ request.journal.submissionconfiguration.lang_section_license_width }} columns error">
+                            <div class="large-{{ request.journal.submissionconfiguration.lang_section_license_width }} columns">
                                 {{ form.license|foundation }}
                                 <p class="help-text"><a href="#" data-open="license">View license information</a></p>
+                            </div>
+                        {% endif %}
+
+                        <div class="clearfix"></div>
+
+                        {% if request.journal.submissionconfiguration.suggest_editors %}
+                            <div class="large-{{ request.journal.submissionconfiguration.editor_reviewer_width }} columns">
+                            {{ form.suggested_editor|foundation }}
+                            </div>
+                        {% endif %}
+
+                        {% if request.journal.submissionconfiguration.suggest_reviewers %}
+                            <div class="large-{{ request.journal.submissionconfiguration.editor_reviewer_width }} columns">
+                            {{ form.suggested_reviewers|foundation }}
                             </div>
                         {% endif %}
 

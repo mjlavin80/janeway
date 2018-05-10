@@ -384,10 +384,12 @@ class Article(models.Model):
     # Suggestions
     suggested_editor = models.ForeignKey('core.Account', blank=True, null=True, help_text=_('Suggest an editor'
                                                                                             'for your article.'),
-                                         related_name='suggested_editor')
+                                         related_name='suggested_editor',
+                                         verbose_name='Suggest an Editor')
     suggested_reviewers = models.TextField(blank=True, null=True, help_text=_('Suggest reviewers for your article,'
                                                                               'please supply name and email'
-                                                                              'address.'))
+                                                                              'address.'),
+                                           verbose_name='Suggest Reviewers')
 
     allarticles = AllArticleManager()
     objects = ArticleManager()
@@ -1187,7 +1189,7 @@ class SubmissionConfiguration(models.Model):
         return 'SubmissionConfiguration for {0}'.format(self.journal.name)
 
     def lang_section_license_width(self):
-        if self.language and self.license:
+        if self.language and self.license and self.section:
             return '4'
         elif not self.language and not self.license:
             return '12'
@@ -1195,6 +1197,10 @@ class SubmissionConfiguration(models.Model):
             return '6'
         elif self.language and not self.license:
             return '6'
+        elif not self.section and self.license and self.language:
+            return '6'
+        else:
+            return '12'
 
     def handle_defaults(self, article):
         if not self.section and self.default_section:
@@ -1207,3 +1213,9 @@ class SubmissionConfiguration(models.Model):
             article.license = self.default_license
 
         article.save()
+
+    def editor_reviewer_width(self):
+        if self.suggest_reviewers and self.suggest_editors:
+            return '6'
+
+        return '12'

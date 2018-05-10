@@ -55,7 +55,7 @@ class ArticleInfo(forms.ModelForm):
     class Meta:
         model = models.Article
         fields = ('title', 'subtitle', 'abstract', 'non_specialist_summary', 'language', 'section', 'license',
-                  'primary_issue', 'page_numbers', 'is_remote', 'remote_url')
+                  'primary_issue', 'page_numbers', 'is_remote', 'remote_url', 'suggested_editor', 'suggested_reviewers')
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': _('Title')}),
             'subtitle': forms.TextInput(attrs={'placeholder': _('Subtitle')}),
@@ -78,6 +78,7 @@ class ArticleInfo(forms.ModelForm):
             self.fields['section'].required = True
             self.fields['license'].required = True
             self.fields['primary_issue'].queryset = article.journal.issues()
+            self.fields['suggested_editor'].queryset = article.journal.editors()
 
             if submission_summary:
                 self.fields['non_specialist_summary'].required = True
@@ -101,6 +102,12 @@ class ArticleInfo(forms.ModelForm):
 
                 if not journal.submissionconfiguration.section:
                     self.fields.pop('section')
+
+                if not journal.submissionconfiguration.suggest_reviewers:
+                    self.fields.pop('suggested_reviewers')
+
+                if not journal.submissionconfiguration.suggest_editors:
+                    self.fields.pop('suggested_editor')
 
             # Add additional fields
             if elements:
