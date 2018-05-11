@@ -107,6 +107,7 @@ def submit_info(request, article_id):
             form.save(request=request)
             article.current_step = 2
             article.save()
+            logic.assign_suggested_editor(article, request)
 
             return redirect(reverse('submit_authors', kwargs={'article_id': article_id}))
 

@@ -212,3 +212,20 @@ def order_fields(request, fields):
         order = ids.index(field.pk)
         field.order = order
         field.save()
+
+
+def assign_suggested_editor(article, request):
+    """
+    If an article has a suggested editor, assign them as an Editor
+    :param article: Article object
+    :return: None
+    """
+
+    if article.suggested_editor and request.journal.submissionconfiguration.suggest_editors:
+        from review import models as review_models
+        review_models.EditorAssignment.objects.get_or_create(
+            article=article,
+            editor=article.suggested_editor,
+            editor_type='editor',
+            notified=False
+        )
