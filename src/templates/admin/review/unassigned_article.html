@@ -59,7 +59,7 @@
                         <td colspan="4">{% if article.comments_editor %}{{ article.comments_editor }}{% else %}No
                             comments{% endif %}</td>
                     </tr>
-                    {% if journal_settings.general.submission_competing_interests %}
+                    {% if request.journal.submissionconfiguration.competing_interests %}
                         <tr>
                             <th colspan="4">Competing Interests</th>
                         </tr>
@@ -67,6 +67,16 @@
                             <td colspan="4">
                                 {% if article.competing_interests %}{{ article.competing_interests }}{% else %}No
                                     CI{% endif %}</td>
+                        </tr>
+                    {% endif %}
+                    {% if request.journal.submissionconfiguration.suggest_reviewers %}
+                         <tr>
+                            <th colspan="4">Suggested Reviewers</th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{ article.suggested_reviewers }}
+                            </td>
                         </tr>
                     {% endif %}
                     {% for field_answer in article.fieldanswer_set.all %}
